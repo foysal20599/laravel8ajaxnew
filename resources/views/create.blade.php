@@ -28,7 +28,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  {{-- <tr>
                     <th scope="row">1</th>
                     <td>Mark</td>
                     <td>Otto</td>
@@ -36,15 +36,13 @@
                     <td>@mdo</td>
                     <td>@mdo</td>
                     <td>@mdo</td>
-                  </tr>
+                  </tr> --}}
                  
                  
                 </tbody>
               </table>
         </div>
         <div class="col-md-6">
-         <form action="{{route('student.store')}}" method="POST">
-             @csrf
              <div class="card">
                  <div class="card-header">
                      <span class="text-info" id="addID">Add Student</span>
@@ -53,31 +51,30 @@
                  <div class="card-body">
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Name</label>
-                        <input type="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="name">
+                        <input type="name" class="form-control" id="name" aria-describedby="emailHelp" >
                       </div>
                       <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="exampleInputPassword1" name="email">
+                        <input type="email" class="form-control" id="email" >
                       </div>
                       <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Phone</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1" name="phone">
+                        <input type="text" class="form-control" id="phone" >
                       </div>
                       <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Address</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1" name="address">
+                        <input type="text" class="form-control" id="address" >
                       </div>
                       <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Roll</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1" name="roll">
+                        <input type="text" class="form-control" id="roll" >
                       </div>
-                      <button type="submit" id="submitID" class="btn btn-primary">Submit</button>
+                      <button type="submit" id="submitID" onclick="addData()" class="btn btn-primary">Submit</button>
                       <button type="submit" id="updatesubmitID" class="btn btn-success">Update</button>
                  </div>
                 
              </div>
             
-           </form>
         </div>
     </div>
     </div>
@@ -104,16 +101,60 @@ function allData(){
             type:"GET",
             dataType:"json",
             url:"all/student",
-            success:function(data){
-                $.each(data function(key, value){
-                    console.log(value)
+            success:function(res){
+                var data =" "
+                $.each(res, function(key, value){
+                    // console.log(value.name);
+                    // console.log(value.email);
+                    data = data + "<tr>" 
+                        data = data + "<td>"+value.id+"</td>" 
+                        data = data + "<td>"+value.name+"</td>" 
+                        data = data + "<td>"+value.email+"</td>" 
+                        data = data + "<td>"+value.phone+"</td>" 
+                        data = data + "<td>"+value.address+"</td>" 
+                        data = data + "<td>"+value.roll+"</td>" 
+                        data = data + "<td>" 
+                        data = data + " <a href='{{url("student/edit" )}}' class='btn btn-sm btn-primary'> Edit</a>" 
+                        data = data + " <a href='{{url("student/delete" )}}' class='btn btn-sm btn-danger'> delete</a>" 
+                        data = data + "</td>" 
+                    data = data + "</tr>"
                 });
-               
+               $('tbody').html(data);
             }
         });
     }
  allData();
 
+function clearData(){
+    $('#name').val('');
+     $('#email').val('');
+     $('#phone').val('');
+     $('#address').val('');
+     $('#roll').val('');
+}
+function addData(){
+    var name = $('#name').val();
+    var email = $('#email').val();
+    var phone = $('#phone').val();
+    var address = $('#address').val();
+    var roll = $('#roll').val();
+    // console.log(name)
+    // console.log(email)
+    // console.log(phone)
+    // console.log(address)
+    // console.log(roll)
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        data: {name:name, email:email, phone:phone, address:address, roll:roll},
+        url:"/student/store/",
+        success: function(data){
+            allData();
+            clearData();
+            console.log('Data Added Successfully!');
+        }
+    });
+}
 </script>
 </body>
 </html>

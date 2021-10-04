@@ -30,3 +30,4 @@ Route::get('/form', [BaseController::class, 'formshow']);
 Route::post('form/store', [BaseController::class, 'store'])->name('form.store');
 Route::resource('student', StudentController::class);
 Route::get('all/student', [StudentController::class, 'allData']);
+Route::post('/student/store/', [StudentController::class, 'dataStore']);

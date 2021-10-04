@@ -88,4 +88,17 @@ class StudentController extends Controller
         return response()->json($all);
         // return $all;
     }
+    public function dataStore(Request $request){
+      $data = Student::insert([
+          'name' => $request->name,
+          'email' => $request->email,
+          'phone' => $request->phone,
+          'address' => $request->address,
+          'roll' => $request->roll,
+      ]);
+      return response()->json($data);
+
+
+   
+    }
 }
