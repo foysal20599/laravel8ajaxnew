@@ -105,7 +105,10 @@ function allData(){
             dataType:"json",
             url:"all/student",
             success:function(data){
-                console.log(data)
+                $.each(data function(key, value){
+                    console.log(value)
+                });
+               
             }
         });
     }
